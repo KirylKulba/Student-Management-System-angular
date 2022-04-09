@@ -1,0 +1,29 @@
+<div *ngIf="ifDisagree" class="col-md-5 offset-md-2">  
+    <h2>Complaint</h2>
+          <label>Select a mark</label>
+            <select [(ngModel)]="selectedMark">
+              <option *ngFor="let mark of marks">
+                {{mark.name}}
+              </option>
+            </select>
+      <br>
+      <label>Message</label>
+      <textarea [(ngModel)]="message"></textarea>
+      <button class="btn btn-success" type="button" (click)="markProposition(selectedNotification.senderId)">Send proposition</button>
+</div>
+<div *ngFor="let notification of notifications;let i = index" class="alert alert-info">
+    <div class="container">
+        <div class="alert-icon">
+            <i class="material-icons">info_outline</i>
+        </div>
+        <button type="button" (click)="onRemoveNotification(i)" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="material-icons">clear</i></span>
+        </button>
+
+        <p><b>From {{ notification.senderName }}</b> {{ notification.content }}</p>
+        <button *ngIf="userRoles.includes(UserRole.Admin)" class="btn btn-success" type="button" (click)="agreeMark(notification,i)">Agree</button>
+        <button *ngIf="userRoles.includes(UserRole.Admin)" class="btn btn-danger" type="button" (click)="disagreeMark(notification,i)">Disagree</button>
+        <button *ngIf="userRoles.includes(UserRole.Student) && notification.mark " class="btn btn-success" type="button" (click)="onDisagree(notification,i)">Disagree</button>
+    </div>
+</div>
+

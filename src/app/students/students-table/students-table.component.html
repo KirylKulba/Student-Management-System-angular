@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-4">
+      <input class="form-control" 
+              type="text" 
+              placeholder="Search by title" 
+              aria-label="Search"
+              [(ngModel)]="filteredStudent">
+  </div>
+</div>
+<br>
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th style="width: 20%">First Name</th>
+      <th style="width: 60%">Last Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr [routerLink]="[student.id]"
+     *ngFor="let student of students | filter:filteredStudent:'firstName' ">
+        <td>{{student.firstName}}</td>
+        <td>{{student.lastName}}</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<div class="col-md-6">
+  <button 
+  type="button" 
+  class="btn btn-dark"
+  (click)="onAddNewStudent()">
+  Add new student
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+  </svg>
+  </button>
+</div>
+<br>
+<div class="col-md-6">
+  <button 
+  type="button" 
+  class="btn btn-dark"
+  (click)="changeMode()">
+  Add many students
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+  </svg>
+  </button>
+</div>
+<br><br>
+
+<div *ngIf="addManyMode">
+  <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Major</th>
+        <th>Semester</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+      *ngFor="let CSVrecord of records">
+          <td>{{CSVrecord.username}}</td>
+          <td>{{CSVrecord.password}}</td>
+          <td>{{CSVrecord.email}}</td>
+          <td>{{CSVrecord.firstName}}</td>
+          <td>{{CSVrecord.lastName}}</td>
+          <td>{{CSVrecord.major}}</td>
+          <td>{{CSVrecord.semester}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-success" (click)="addUsers()">Add users</button>
+</div>

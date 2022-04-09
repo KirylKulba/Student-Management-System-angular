@@ -1,0 +1,69 @@
+<form *ngIf="studentLoaded || (!editMode && majorAndSemesterLoaded)" [formGroup]="studentForm" (ngSubmit)="onSubmitForm()">
+    
+    <div *ngIf="!editMode">
+        <h3>User Profile</h3>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" 
+                id="text" 
+                class="form-control"
+                formControlName="username"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" 
+                id="password" 
+                class="form-control"
+                formControlName="password"
+                required
+                minlength="3">
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" 
+                id="email" 
+                class="form-control"
+                formControlName="email"
+                required
+                email>
+        </div>
+    </div>
+
+
+    <h3>Student Profile</h3>
+    <div class="form-gorup">
+      <label for="username">First Name</label>
+      <input 
+        type="text"
+        id="first name"
+        formControlName="firstName"
+        class="form-control">
+    </div>
+    <div class="form-gorup">
+      <label for="username">Last Name</label>
+      <input 
+        type="text"
+        id="last name"
+        formControlName="lastName"
+        class="form-control">
+    </div>
+    <div class="form-gorup">
+        <label for="semester">Select semester</label>
+            <select class="form-control" #selectedSemester 
+                    formControlName="semester">
+                <option *ngFor="let semester of semesters;">{{ semester }}</option>
+            </select>
+    </div>
+    <div class="form-gorup">
+    <label for="major">Select major</label>
+            <select class="form-control" #selectedMajor 
+                    formControlName="major"
+                    (change)="onChange($event.target.value)">
+                <option *ngFor="let major of majors" 
+                [ngValue]="major.id">{{ major.name }}</option>
+            </select>
+    </div>
+    <br>
+    <button class="btn btn-dark">{{ editMode==true ? 'Submit changes' : 'Add new student' }}</button>
+</form>

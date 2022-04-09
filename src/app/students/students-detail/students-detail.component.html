@@ -1,0 +1,121 @@
+<div *ngIf="studentLoaded" class="row">
+    <div class="col-md-5">
+       <h1>{{ student.firstName }} {{ student.lastName }}</h1>
+       <br>
+         <h3>Major : {{ major.name }}</h3>
+         <h3>Semester : {{ student.semester }}</h3>
+         <br>
+         <button 
+                    type="button" 
+                    class="btn btn-dark"
+                    (click)="onEditProfile()">
+                    Edit profile
+         </button>
+         <br>
+         <br>
+         <button *ngIf="userRoles.includes(UserRole.Admin) && !userRoles.includes(UserRole.Student) && !userRoles.includes(UserRole.Lecturer)"
+                    type="button" 
+                    class="btn btn-danger"
+                    (click)="onDeleteStudent()">
+                    Delete this student
+         </button>
+         <br>
+         <br>
+    
+                <label>Select semester</label>
+                <select class="form-control" #selectedSemester>
+                    <option *ngFor="let semester of semesters;">{{ semester }}</option>
+                </select>
+                <br>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <button 
+                    type="button" 
+                    class="btn btn-dark"
+                    (click)="onLoadSemesterCurriculum(selectedSemester)">
+                    Load semester curriculum
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                    </button>
+                  </div>
+                  <br>
+                  <div class="col-md-6">
+                    <button 
+                    type="button" 
+                    class="btn btn-dark"
+                    (click)="onLoadAvailableCourses(selectedSemester)">
+                    Load available courses 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                    </button>
+                  </div>
+                </div>
+    </div>
+    <div *ngIf="detailMode==StudentDetailMode.Curriculum" class="col-md-5 offset-md-2">
+                <h2>Courses for {{ loadedSemester }}-d semester</h2>
+                <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Mark</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor = "let course of studentCourses;">
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.status }}</td>
+                            <td>{{ course.mark }}</td>
+                            <td>
+                              <button *ngIf="userRoles.includes(UserRole.Admin) || userRoles.includes(UserRole.Lecturer)" class="btn btn-primary"
+                              (click)="onGiveMark(course.sc_id)">Put a mark</button> | 
+                              <button class="btn btn-danger"
+                              (click)="onDisenrollFromCourse(course)">Disenroll</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                </table>
+    </div>
+    <div *ngIf="detailMode==StudentDetailMode.AvailableCourses" class="col-md-5 offset-md-2">
+        <h2>Available courses for {{ student.semester }}-d semester</h2>
+        <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor = "let course of availableCourses;">
+                    <td>{{ course.name }}</td>
+                    <td> 
+                      <button class="btn btn-primary"
+                      (click)="onEnrollOnCourse(course)">Enroll</button> 
+                    </td>
+                  </tr>
+                </tbody>
+        </table>
+    </div>
+    <div *ngIf="detailMode==StudentDetailMode.EditProfile" class="col-md-5 offset-md-2">  
+      <h2>Form for edditing student profile</h2>
+      <app-student-edit [student]="student" [editMode]="true"></app-student-edit>
+    </div>
+    <div *ngIf="detailMode==StudentDetailMode.Assessment" class="col-md-5 offset-md-2">  
+      <h2>Form for giving student a mark</h2>
+            <label>Select a mark</label>
+              <select [(ngModel)]="selectedMark">
+                <option *ngFor="let mark of marks">
+                  {{mark.name}}
+                </option>
+              </select>
+        <br>
+        <button class="btn btn-dark" type="button" (click)="onSubmitMark()">Give a mark</button>
+    </div>
+</div>
+<br>
+<app-notifications></app-notifications>
+

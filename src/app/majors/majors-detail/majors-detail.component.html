@@ -1,0 +1,133 @@
+<div *ngIf="majorLoaded" class="row">
+    <div class="col-md-5">
+       <h1>{{ major.name }}</h1>
+       <br>
+         <h3>{{ major.description }}</h3>
+         <br>
+        <p>Semesters : {{ major.semesters }}</p>
+    
+                <label>Select semester</label>
+                <select class="form-control" #selectedSemester>
+                    <option *ngFor="let semester of semesters;">{{ semester }}</option>
+                </select>
+                <br>
+
+                <div class="row">
+                  <div class="col-md-6">
+
+                    <button type="button" 
+                      class="btn btn-primary"
+                      (click)="onEditMajor()">Edit major
+                    </button>
+
+                    <button
+                    type="button" 
+                    class="btn btn-dark"
+                    (click)="onLoadCourses(selectedSemester)">
+                    Load courses 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                    </button>
+                    <br>
+                    <br>
+                    <button type="button" 
+                    class="btn btn-dark"
+                    (click)="onAddNewCourse()">Add Course</button>
+                  </div>
+
+                  <div class="col-md-7">
+                    <button 
+                    type="button" 
+                    class="btn btn-dark"
+                    (click)="onLoadStudents(selectedSemester)">
+                    Load list of students </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <br>
+                  <button type="button" 
+                  class="btn btn-danger"
+                  (click)="onDeleteMajor()">Delete major</button>
+                </div>
+    </div>
+    <div *ngIf="detailMode==MajorDetailMode.ShowCourses" class="col-md-5 offset-md-2">
+                <h2>Courses for {{ loadedSemester }}-d semester</h2>
+                <table class="table">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th>Name</th>
+                            <!--
+                            <th>Description</th>
+                            <th>Points</th>-->
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor = "let course of courses;">
+                            <td>{{ course.name }}</td>
+                            <!--
+                            <td>{{ course.description }}</td>
+                            <td>{{ course.points }}</td>
+                            -->
+                            <td> 
+                              <button class="btn btn-danger"
+                              (click)="onDeleteCourse(course.id)">Delete</button>/
+                              <button class="btn btn-primary"
+                              (click)="onEditCourse(course)">Edit</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                </table>
+    </div>
+    <div *ngIf="detailMode==MajorDetailMode.ShowStudents" class="col-md-5 offset-md-2">
+        <h2>Students of {{ loadedSemester }}-d semester</h2>
+        <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor = "let student of students;">
+                    <td>{{ student.firstName }}</td>
+                    <td>{{ student.lastName }}</td>
+                  </tr>
+                </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="detailMode==MajorDetailMode.EditMajor" class="col-md-5 offset-md-2">
+      <app-majors-edit [editMode]=true [majorId]=id [major]=major></app-majors-edit>
+    </div>
+
+    <div *ngIf="detailMode==MajorDetailMode.AddCourse || detailMode==MajorDetailMode.EditCourse" class="col-md-5 offset-md-2">  
+      <h2>Form for new course</h2>
+      <form [formGroup]="newCourseForm" (ngSubmit)="detailMode==MajorDetailMode.AddCourse ? onAddCourse(selectedSemester) : onSubmitCourseChanges(selectedSemester)">
+        <div class="form-gorup">
+          <label for="username">Course name</label>
+          <input 
+            type="text"
+            id="name"
+            formControlName="courseName"
+            class="form-control">
+        </div>
+        <!--
+        <div class="form-gorup">
+          <label for="description">Description</label>
+          <textarea
+            type="textarea"
+            id="description"
+            formControlName="courseDescription"
+            class="form-control">
+          </textarea>
+        </div>-->
+        <br>
+        <button class="btn btn-dark">Submit</button>
+      </form>
+    </div>
+</div>

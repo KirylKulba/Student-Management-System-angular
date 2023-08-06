@@ -1,5 +1,8 @@
 # Student-Management-System-angular
 
+I have been working on this project as part of my web development course, focusing on scripting languages and gained hands-on practice with Angular framework.
+Right below you can find a description of the system in polish language.
+
 # Kurs:Języki Skryptowe (Informatyka Stosowana 4 semestr)
 
 # Temat

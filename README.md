@@ -1,4 +1,4 @@
-# Student Management System (fornted part)
+# Student Management System (frontend part)
 
 I have been working on this project as part of my web development course, focusing on scripting languages and gained hands-on practice with Angular framework.
 Right below you can find a description of the system in polish language.
